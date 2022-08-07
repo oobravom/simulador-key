@@ -1,0 +1,28 @@
+apiVersion: apps/v1 
+kind: Deployment
+metadata:
+  name: simulador-key-deployment
+  namespace: tlacotec
+spec:
+  selector:
+    matchLabels:
+      app: simulador-key
+  replicas: 1 
+  template:
+    metadata:
+      labels:
+        app: simulador-key
+    spec:
+      containers:
+      - name: oobravom-simulador-key
+        image: oobravom/simulador-key:1.0-Final
+        env:
+          - name: KC_PROXY
+            value: "edge"
+          - name: KC_HOSTNAME
+            value: simulador-key-service
+          - name: KC_DB_URL
+            value: jdbc:postgresql://simulador-pql-service:5432/simulador
+        ports:
+        - name: https
+          containerPort: 8443
